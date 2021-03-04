@@ -2,18 +2,18 @@
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using static InterviewPractice.Helpers.WaitMechanism;
 
 namespace InterviewPractice.PageObjects
 {
-    public class AccessoryPage
+    public class ProductPage
     {
         // Declarando constructor con parametro desde clase WebDriverInstantiator utilizando Configuration Manager Config
         #region Constructors
@@ -36,21 +36,31 @@ namespace InterviewPractice.PageObjects
         #endregion
 
         #region Locator Strings
-        private string QuantityDropdownXPath
+        private string FirstProductXPath
         {
             get
             {
-                string xpath = "//select[@id='quantity']";
+                string xpath = "//div[@id='search']/div[1]/div[2]/div/span[3]/div[2]/div[2]";
 
                 return xpath;
             }
         }
 
-        private string WomenMenuXPath
+        private string FirstProductSpanXPath
         {
             get
             {
-                string xpath = "//li[contains(@class,'women dropdown has_sub_menu')]";
+                string xpath = "//div[@id='search']/div[1]/div[2]/div/span[3]/div[2]/div[2]";
+
+                return xpath;
+            }
+        }
+
+        private string FirstProductPriceXPath
+        {
+            get
+            {
+                string xpath = "//div[@id='search']/div[1]/div[2]/div/span[3]/div[2]/div[2]/div/span//div[4]//a/span[1]/span[2]";
 
                 return xpath;
             }
@@ -108,21 +118,31 @@ namespace InterviewPractice.PageObjects
         #endregion
 
         #region Objects
-        private IWebElement QuantityDropdown
+        private IWebElement FirstProduct
         {
             get
             {
-                IWebElement element = webDriver.FindElement(By.XPath(QuantityDropdownXPath));
+                IWebElement element = webDriver.FindElement(By.XPath(FirstProductXPath));
 
                 return element;
             }
         }
 
-        private IWebElement WomenMenu
+        private IWebElement FirstProductSpan
         {
             get
             {
-                IWebElement element = webDriver.FindElement(By.XPath(WomenMenuXPath));
+                IWebElement element = webDriver.FindElement(By.XPath(FirstProductSpanXPath));
+
+                return element;
+            }
+        }
+
+        private IWebElement FirstProductPrice
+        {
+            get
+            {
+                IWebElement element = webDriver.FindElement(By.XPath(FirstProductPriceXPath));
 
                 return element;
             }
@@ -170,22 +190,63 @@ namespace InterviewPractice.PageObjects
         #endregion
 
         #region Methods
-        public void SelectWalletQuantity(string quantity)
+        public bool IsProductDisplayedOnPage(string searchedProduct)
         {
-            waitMechanism.ExplicitWaitByXPath(webDriver, 20, QuantityDropdownXPath);
+            string firstProductText = string.Empty;
+            bool isDisplayed = false;
+            waitMechanism.ExplicitWaitByXPath(webDriver, 30, FirstProductXPath);
 
-            dropdownElement = new SelectElement(QuantityDropdown);
-            dropdownElement.SelectByText(quantity);
+            firstProductText = FirstProductSpan.Text;
+
+            if (firstProductText.Contains("\r"))
+            {
+                firstProductText = firstProductText.Replace("\r", " ");
+                if (firstProductText.Contains("\n"))
+                {
+                    firstProductText = firstProductText.Replace("\n", "");
+                }
+            }
+
+            if (firstProductText.ToLower().Contains(searchedProduct.ToLower()))
+            {
+                isDisplayed = true;
+            }
+
+            return isDisplayed;
         }
 
-        public void GetHomePageScreenShot()
+        public string GetFirstProductPrice()
+        {
+            string productPrice = string.Empty;
+
+            productPrice = FirstProductPrice.Text.Length > 0 ? FirstProductPrice.Text : string.Empty;
+            productPrice = Regex.Replace(productPrice, @"\s+", ".");
+
+            return productPrice;
+        }
+
+        public void SelectFirstProduct()
+        {
+            FirstProductSpan.Click();
+            Thread.Sleep((int)ScriptWaits.SmallWait);
+        }
+
+        //public void SelectWalletQuantity(string quantity)
+        //{
+        //    waitMechanism.ExplicitWaitByXPath(webDriver, 20, QuantityDropdownXPath);
+
+        //    dropdownElement = new SelectElement(QuantityDropdown);
+        //    dropdownElement.SelectByText(quantity);
+        //}
+
+        public void GetProductPageScreenShot()
         {
             // Tomando screenshot
             Screenshot image = ((ITakesScreenshot)webDriver).GetScreenshot();
             Thread.Sleep((int)ScriptWaits.MediumWait);
 
             // Salvando screenshot
-            FileInfo file = new FileInfo(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"TestEvidence\HomePage_Screenshot.png"));
+            FileInfo file = new FileInfo(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"TestEvidence\ProductPage_Screenshot.png"));
             Thread.Sleep((int)ScriptWaits.SmallWait);
 
             image.SaveAsFile(file.ToString(), ScreenshotImageFormat.Png);

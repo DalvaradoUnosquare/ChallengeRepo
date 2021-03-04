@@ -16,6 +16,19 @@ namespace InterviewPractice
         protected string siteURL = ConfigurationManager.AppSettings["SiteUrl"];
         protected static bool ExecutedAfterFeature { get; set; }
 
+        protected void LaunchBrowser(string testCaseName)
+        {
+            string currentPageTitle = string.Empty;
+            ExecutedAfterFeature = false;
+
+            ExtendReports extendReports = new ExtendReports();
+            extendReports.ExtentStart();
+
+            // Lanzando Browser
+            BrowserManager browserManager = new BrowserManager();
+            currentPageTitle = browserManager.InitializeBrowser(siteURL, testCaseName);
+            Assert.IsTrue(currentPageTitle != string.Empty, "The browser wasn't launched correctly");
+        }
 
         protected void LogIntoApplication(string username, string password)
         {
