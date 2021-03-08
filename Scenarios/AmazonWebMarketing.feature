@@ -15,7 +15,7 @@ Scenario: Samsung Galaxy Note 20 Price Compare Verification
 
 @TestCase2_MediumPriority
 Scenario: Samsung Galaxy FE 5G Price Compare Verification
-	Given I run the: 'TestCase2' to get into Amazon website
+	Given I run the: 'TestCase2' to get into Amazon website with the user: 'Administrators'
 	And Search for another 'Samsung Galaxy S20 FE 5G' in the search box
 	And Verify if the item is displayed on screen to select the first one located by storing the price
 	And I click on the first result, once in the details page I compare this price vs the above one

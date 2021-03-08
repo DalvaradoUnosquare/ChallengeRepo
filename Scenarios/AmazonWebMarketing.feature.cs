@@ -162,7 +162,8 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 this.ScenarioStart();
 #line 18
- testRunner.Given("I run the: \'TestCase2\' to get into Amazon website", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I run the: \'TestCase2\' to get into Amazon website with the user: \'Administrators\'" +
+                        "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 19
  testRunner.And("Search for another \'Samsung Galaxy S20 FE 5G\' in the search box", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");

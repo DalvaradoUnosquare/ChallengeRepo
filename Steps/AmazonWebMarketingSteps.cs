@@ -2,6 +2,8 @@
 using InterviewPractice.PageObjects;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
+using System;
+using System.Text;
 
 namespace InterviewPractice.Steps
 {
@@ -15,9 +17,14 @@ namespace InterviewPractice.Steps
             this.LaunchBrowser(testCaseName);
 
             HomePage homepage = new HomePage();
-            //Dictionary<string, string> currentUserInfo = new Dictionary<string, string>();
-            //currentUserInfo = homepage.GetCurrtenUserDBInfo(userName);
+            Dictionary<string, string> currentUserInfo = new Dictionary<string, string>();
+            currentUserInfo = homepage.GetCurrtenUserDBInfo(userName);
 
+            Assert.IsTrue(currentUserInfo["UserID"] != string.Empty, "Empty User Id");
+            Assert.IsNotNull(Encoding.ASCII.GetBytes(currentUserInfo["Sid"]), "Null Sid");
+            Assert.IsTrue(Boolean.Parse(currentUserInfo["UserType"]), "False User Type");
+            Assert.IsTrue(Boolean.Parse(currentUserInfo["AuthType"]), "False Auth Type");
+            Assert.IsTrue(currentUserInfo["UserName"] != string.Empty, "Empty User Name");
         }
 
         [Given(@"Search for a '(.*)' in the search box")]
@@ -92,13 +99,20 @@ namespace InterviewPractice.Steps
         #endregion
 
         #region @TestCase2_MediumPriority
-        [Given(@"I run the: '(.*)' to get into Amazon website")]
-        public void GivenIRunTheToGetIntoAmazonWebsite(string testCaseName)
+        [Given(@"I run the: '(.*)' to get into Amazon website with the user: '(.*)'")]
+        public void GivenIRunTheToGetIntoAmazonWebsiteWithTheUser(string testCaseName, string userName)
         {
             this.LaunchBrowser(testCaseName);
 
-            //Dictionary<string, string> currentUserInfo = new Dictionary<string, string>();
-            //currentUserInfo = homepage.GetCurrtenUserDBInfo(userName);
+            HomePage homepage = new HomePage();
+            Dictionary<string, string> currentUserInfo = new Dictionary<string, string>();
+            currentUserInfo = homepage.GetCurrtenUserDBInfo(userName);
+
+            Assert.IsTrue(currentUserInfo["UserID"] != string.Empty, "Empty User Id");
+            Assert.IsNotNull(Encoding.ASCII.GetBytes(currentUserInfo["Sid"]), "Null Sid");
+            Assert.IsTrue(Boolean.Parse(currentUserInfo["UserType"]), "False User Type");
+            Assert.IsTrue(Boolean.Parse(currentUserInfo["AuthType"]), "False Auth Type");
+            Assert.IsTrue(currentUserInfo["UserName"] != string.Empty, "Empty User Name");
         }
 
         [Given(@"Search for another '(.*)' in the search box")]

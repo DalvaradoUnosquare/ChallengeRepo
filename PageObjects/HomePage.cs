@@ -254,10 +254,10 @@ namespace InterviewPractice.PageObjects
                     //Getting Table Values
                     while (dataReader.Read())
                     {
-                        agencyGroupExcludedTestDBInfoList.Add("USERID", Convert.ToString(dataReader.GetValue(dataReader.GetOrdinal("UserID"))));
+                        agencyGroupExcludedTestDBInfoList.Add("UserID", Convert.ToString(dataReader.GetValue(dataReader.GetOrdinal("UserID"))));
                         agencyGroupExcludedTestDBInfoList.Add("Sid", Convert.ToString(dataReader.GetValue(dataReader.GetOrdinal("Sid"))));
-                        agencyGroupExcludedTestDBInfoList.Add("UserType", Convert.ToDateTime(dataReader.GetValue(dataReader.GetOrdinal("UserType"))).ToShortDateString());
-                        agencyGroupExcludedTestDBInfoList.Add("AuthType", Convert.ToDateTime(dataReader.GetValue(dataReader.GetOrdinal("AuthType"))).ToShortDateString());
+                        agencyGroupExcludedTestDBInfoList.Add("UserType", Convert.ToBoolean(dataReader.GetValue(dataReader.GetOrdinal("UserType"))).ToString());
+                        agencyGroupExcludedTestDBInfoList.Add("AuthType", Convert.ToBoolean(dataReader.GetValue(dataReader.GetOrdinal("AuthType"))).ToString());
                         agencyGroupExcludedTestDBInfoList.Add("UserName", Convert.ToString(dataReader.GetValue(dataReader.GetOrdinal("UserName"))));
                     }
 
